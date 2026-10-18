@@ -15,7 +15,7 @@
 
 <br>
 
-<img width="507" height="291" alt="{BEC281D3-A3D7-47B5-A841-F8B2F33DEA9E}" src="https://github.com/user-attachments/assets/62580bf6-b667-4457-b5a6-71b1c5419fdc" />
+<img width="955" height="346" alt="{BEC281D3-A3D7-47B5-A841-F8B2F33DEA9E}" src="https://github.com/user-attachments/assets/62580bf6-b667-4457-b5a6-71b1c5419fdc" />
 
 
 <sub>Full topology built in Cisco Packet Tracer</sub>
