@@ -15,7 +15,8 @@
 
 <br>
 
-<img width="951" alt="AetherNet full topology" src="images/topology.png" />
+<img width="507" height="291" alt="{BEC281D3-A3D7-47B5-A841-F8B2F33DEA9E}" src="https://github.com/user-attachments/assets/62580bf6-b667-4457-b5a6-71b1c5419fdc" />
+
 
 <sub>Full topology built in Cisco Packet Tracer</sub>
 
@@ -54,7 +55,8 @@ Every building has its own data and voice VLAN, DHCP hands out addresses (and th
 
 ### Packet Tracer view
 
-<img width="951" alt="AetherNet Packet Tracer topology" src="images/topology.png" />
+<img width="507" height="291" alt="{BEC281D3-A3D7-47B5-A841-F8B2F33DEA9E}" src="https://github.com/user-attachments/assets/d05bcb23-91ef-47f2-8aff-fdcf0009bc36" />
+
 
 ### Logical view
 
