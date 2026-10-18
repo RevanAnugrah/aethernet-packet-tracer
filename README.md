@@ -56,6 +56,7 @@ Every building has its own data and voice VLAN, DHCP hands out addresses (and th
 ### Packet Tracer view
 
 <img width="507" height="291" alt="{BEC281D3-A3D7-47B5-A841-F8B2F33DEA9E}" src="https://github.com/user-attachments/assets/d05bcb23-91ef-47f2-8aff-fdcf0009bc36" />
+<img width="960" height="345" alt="{DEFDA49F-C306-4D23-A9FF-45F4204DA12A}" src="https://github.com/user-attachments/assets/3156e721-b29b-4025-934b-91b0ca211b68" />
 
 
 ### Logical view
