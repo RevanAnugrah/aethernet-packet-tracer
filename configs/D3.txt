@@ -1,0 +1,61 @@
+! AetherNet - D3 (Gedung 3 building switch)
+!
+enable
+configure terminal
+hostname D3
+no ip domain-lookup
+!
+ip routing
+!
+vlan 31
+ name DATA-G3
+vlan 32
+ name VOICE-G3
+!
+interface g1/1/1
+ description To C1
+ no switchport
+ ip address 10.0.0.22 255.255.255.252
+ no shutdown
+interface g1/1/2
+ description To C2
+ no switchport
+ ip address 10.0.0.26 255.255.255.252
+ no shutdown
+!
+interface vlan 31
+ ip address 10.1.31.1 255.255.255.0
+ no shutdown
+interface vlan 32
+ ip address 10.1.32.1 255.255.255.0
+ no shutdown
+!
+ip dhcp excluded-address 10.1.31.1 10.1.31.10
+ip dhcp pool G3-DATA
+ network 10.1.31.0 255.255.255.0
+ default-router 10.1.31.1
+ dns-server 10.1.60.10
+ domain-name aethernet.local
+!
+ip dhcp excluded-address 10.1.32.1 10.1.32.10
+ip dhcp pool G3-VOICE
+ network 10.1.32.0 255.255.255.0
+ default-router 10.1.32.1
+ option 150 ip 10.0.0.38
+!
+router ospf 1
+ router-id 10.255.0.13
+ network 10.0.0.0 0.255.255.255 area 0
+ passive-interface vlan 31
+ passive-interface vlan 32
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

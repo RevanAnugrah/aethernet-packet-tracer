@@ -1,0 +1,38 @@
+! AetherNet - BR2 (branch 2 router, AS 65002)
+!
+enable
+configure terminal
+hostname BR2
+no ip domain-lookup
+!
+interface Serial0/2/0
+ description To WAN1 (eBGP)
+ ip address 10.0.0.42 255.255.255.252
+ ! clock rate is accepted only on the DCE side
+ clock rate 64000
+ no shutdown
+interface g0/0
+ description To BR2-SW
+ ip address 10.0.0.53 255.255.255.252
+ no shutdown
+!
+ip route 10.1.81.0 255.255.255.0 10.0.0.54
+ip route 10.1.82.0 255.255.255.0 10.0.0.54
+ip route 0.0.0.0 0.0.0.0 10.0.0.41
+!
+router bgp 65002
+ bgp router-id 10.255.0.32
+ neighbor 10.0.0.41 remote-as 65000
+ network 10.1.81.0 mask 255.255.255.0
+ network 10.1.82.0 mask 255.255.255.0
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

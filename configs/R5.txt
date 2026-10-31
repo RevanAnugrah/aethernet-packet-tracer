@@ -1,0 +1,52 @@
+! AetherNet - R5 (EIGRP <-> RIPv2 border router)
+!
+enable
+configure terminal
+hostname R5
+no ip domain-lookup
+!
+interface g0/2/0
+ description To R4
+ ip address 10.0.0.94 255.255.255.252
+ no shutdown
+interface g0/1
+ description To R6
+ ip address 10.0.0.97 255.255.255.252
+ no shutdown
+interface g0/0
+ description LAN SW8
+ ip address 10.2.20.1 255.255.255.0
+ no shutdown
+!
+ip dhcp excluded-address 10.2.20.1 10.2.20.10
+ip dhcp pool R5-LAN
+ network 10.2.20.0 255.255.255.0
+ default-router 10.2.20.1
+ dns-server 10.2.30.10
+!
+router eigrp 100
+ eigrp router-id 10.255.0.46
+ network 10.0.0.92 0.0.0.3
+ network 10.2.20.0 0.0.0.255
+ no auto-summary
+ passive-interface g0/0
+ redistribute rip metric 10000 100 255 1 1500
+!
+router rip
+ version 2
+ no auto-summary
+ network 10.0.0.0
+ passive-interface default
+ no passive-interface g0/1
+ redistribute eigrp 100 metric 2
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

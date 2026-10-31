@@ -1,0 +1,55 @@
+! AetherNet - BR1-SW (Branch 1 multilayer switch)
+!
+enable
+configure terminal
+hostname BR1-SW
+no ip domain-lookup
+!
+ip routing
+!
+vlan 71
+ name DATA-BR1
+vlan 72
+ name VOICE-BR1
+!
+interface g1/0/1
+ description To BR1
+ no switchport
+ ip address 10.0.0.50 255.255.255.252
+ no shutdown
+interface vlan 71
+ ip address 10.1.71.1 255.255.255.0
+ no shutdown
+interface vlan 72
+ ip address 10.1.72.1 255.255.255.0
+ no shutdown
+!
+ip route 0.0.0.0 0.0.0.0 10.0.0.49
+!
+ip dhcp excluded-address 10.1.71.1 10.1.71.10
+ip dhcp pool BR1-DATA
+ network 10.1.71.0 255.255.255.0
+ default-router 10.1.71.1
+ dns-server 10.1.60.10
+ domain-name aethernet.local
+!
+ip dhcp excluded-address 10.1.72.1 10.1.72.10
+ip dhcp pool BR1-VOICE
+ network 10.1.72.0 255.255.255.0
+ default-router 10.1.72.1
+ option 150 ip 10.0.0.38
+!
+interface range g1/0/2 - 3
+ description Trunk to access switches
+ switchport mode trunk
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

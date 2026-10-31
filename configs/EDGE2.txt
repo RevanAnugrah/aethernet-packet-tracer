@@ -1,0 +1,45 @@
+! AetherNet - EDGE2 (EIGRP / OSPF router (no redistribution))
+!
+enable
+configure terminal
+hostname EDGE2
+no ip domain-lookup
+!
+interface g0/0
+ description To SW28
+ ip address 10.0.0.77 255.255.255.252
+ no shutdown
+interface g0/2/0
+ description To EDGE1
+ ip address 10.0.0.86 255.255.255.252
+ no shutdown
+interface g0/1
+ description To C1
+ ip address 10.0.0.109 255.255.255.252
+ no shutdown
+interface g0/2
+ description To C2
+ ip address 10.0.0.113 255.255.255.252
+ no shutdown
+!
+router eigrp 100
+ eigrp router-id 10.255.0.42
+ network 10.0.0.76 0.0.0.3
+ network 10.0.0.84 0.0.0.3
+ no auto-summary
+!
+router ospf 1
+ router-id 10.255.0.42
+ network 10.0.0.108 0.0.0.3 area 0
+ network 10.0.0.112 0.0.0.3 area 0
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

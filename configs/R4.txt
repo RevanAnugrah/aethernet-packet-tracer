@@ -1,0 +1,32 @@
+! AetherNet - R4 (EIGRP router)
+!
+enable
+configure terminal
+hostname R4
+no ip domain-lookup
+!
+interface g0/2/0
+ description To R3
+ ip address 10.0.0.90 255.255.255.252
+ no shutdown
+interface g0/1/0
+ description To R5
+ ip address 10.0.0.93 255.255.255.252
+ no shutdown
+!
+router eigrp 100
+ eigrp router-id 10.255.0.45
+ network 10.0.0.88 0.0.0.3
+ network 10.0.0.92 0.0.0.3
+ no auto-summary
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

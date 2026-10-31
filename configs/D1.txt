@@ -1,0 +1,61 @@
+! AetherNet - D1 (Gedung 1 building switch)
+!
+enable
+configure terminal
+hostname D1
+no ip domain-lookup
+!
+ip routing
+!
+vlan 11
+ name DATA-G1
+vlan 12
+ name VOICE-G1
+!
+interface g1/1/2
+ description To C1
+ no switchport
+ ip address 10.0.0.6 255.255.255.252
+ no shutdown
+interface g1/1/1
+ description To C2
+ no switchport
+ ip address 10.0.0.10 255.255.255.252
+ no shutdown
+!
+interface vlan 11
+ ip address 10.1.11.1 255.255.255.0
+ no shutdown
+interface vlan 12
+ ip address 10.1.12.1 255.255.255.0
+ no shutdown
+!
+ip dhcp excluded-address 10.1.11.1 10.1.11.10
+ip dhcp pool G1-DATA
+ network 10.1.11.0 255.255.255.0
+ default-router 10.1.11.1
+ dns-server 10.1.60.10
+ domain-name aethernet.local
+!
+ip dhcp excluded-address 10.1.12.1 10.1.12.10
+ip dhcp pool G1-VOICE
+ network 10.1.12.0 255.255.255.0
+ default-router 10.1.12.1
+ option 150 ip 10.0.0.38
+!
+router ospf 1
+ router-id 10.255.0.11
+ network 10.0.0.0 0.255.255.255 area 0
+ passive-interface vlan 11
+ passive-interface vlan 12
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

@@ -1,0 +1,49 @@
+! AetherNet - VOIP (Call Manager Express)
+!
+enable
+configure terminal
+hostname VOIP
+no ip domain-lookup
+!
+interface fa0/0
+ description To C2
+ ip address 10.0.0.38 255.255.255.252
+ no shutdown
+!
+ip route 0.0.0.0 0.0.0.0 10.0.0.37
+!
+telephony-service
+ max-ephones 20
+ max-dn 20
+ ip source-address 10.0.0.38 port 2000
+ auto assign 1 to 20
+!
+ephone-dn 1
+ number 1001
+ephone-dn 2
+ number 1002
+ephone-dn 3
+ number 1003
+ephone-dn 4
+ number 1004
+ephone-dn 5
+ number 1005
+ephone-dn 6
+ number 1006
+ephone-dn 7
+ number 1007
+ephone-dn 8
+ number 1008
+ephone-dn 9
+ number 1009
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

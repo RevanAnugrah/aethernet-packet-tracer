@@ -1,0 +1,46 @@
+! AetherNet - WAN2 (branch WAN router, AS 65000)
+!
+enable
+configure terminal
+hostname WAN2
+no ip domain-lookup
+!
+interface loopback0
+ ip address 10.255.0.22 255.255.255.255
+interface Serial0/2/0
+ description To BR1 (eBGP)
+ ip address 10.0.0.45 255.255.255.252
+ ! clock rate is accepted only on the DCE side
+ clock rate 64000
+ no shutdown
+interface g0/1
+ description To C1
+ ip address 10.0.0.62 255.255.255.252
+ no shutdown
+interface g0/0
+ description To C2
+ ip address 10.0.0.70 255.255.255.252
+ no shutdown
+!
+router ospf 1
+ router-id 10.255.0.22
+ network 10.0.0.60 0.0.0.3 area 0
+ network 10.0.0.68 0.0.0.3 area 0
+ network 10.255.0.22 0.0.0.0 area 0
+ redistribute bgp 65000 subnets
+!
+router bgp 65000
+ bgp router-id 10.255.0.22
+ neighbor 10.0.0.46 remote-as 65001
+!
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end

@@ -1,0 +1,56 @@
+! AetherNet - SW28 (EIGRP zone multilayer switch)
+!
+enable
+configure terminal
+hostname SW28
+no ip domain-lookup
+!
+ip routing
+!
+vlan 10
+ name SERVER1
+!
+interface g1/0/1
+ description To EDGE1
+ no switchport
+ ip address 10.0.0.74 255.255.255.252
+ no shutdown
+interface g1/0/2
+ description To EDGE2
+ no switchport
+ ip address 10.0.0.78 255.255.255.252
+ no shutdown
+interface g1/0/4
+ description To R3
+ no switchport
+ ip address 10.0.0.81 255.255.255.252
+ no shutdown
+interface g1/0/3
+ description Server1
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+!
+interface vlan 10
+ ip address 10.2.10.1 255.255.255.0
+ no shutdown
+!
+router eigrp 100
+ eigrp router-id 10.255.0.43
+ network 10.0.0.72 0.0.0.3
+ network 10.0.0.76 0.0.0.3
+ network 10.0.0.80 0.0.0.3
+ network 10.2.10.0 0.0.0.255
+ no auto-summary
+ passive-interface vlan 10
+!
+service timestamps log datetime msec
+logging host 10.1.60.10
+ip domain-name aethernet.local
+ip ssh version 2
+username <ADMIN_USER> privilege 15 secret <STRONG_PASSWORD>
+line vty 0 15
+ transport input ssh
+ login local
+!
+end
